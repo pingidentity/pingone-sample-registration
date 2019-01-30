@@ -1,0 +1,1 @@
+# pingone-customers-sample-registration
