@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>PingOne for Customers User Registration Sample</title>
+  <link rel="stylesheet" href="https://cdn.shoelace.style/1.0.0-beta24/shoelace.css">
+  <script th:inline="javascript" th:replace="general :: sign-in-container-js">
+  </script>
+</head>
+
+<body>
+
+<div class="container">
+  <h2>PingOne for Customers User Registration Sample</h2>
+
+  <div th:replace="general :: sign-in-container"></div>
+
+  <div th:unless="${#authorization?.expression('isAuthenticated()')}">
+    <br>
+    <button onclick="location.href='password/forgot'" type="button">
+      Forgot Password
+    </button>
+  </div>
+
+  <div th:unless="${#authorization?.expression('isAuthenticated()')}">
+    <br>
+    <button onclick="location.href='/register'" type="button">
+      Register New User
+    </button>
+  </div>
+
+  <div th:if="${#authorization?.expression('isAuthenticated()')}">
+    <br>
+    <button onclick="location.href='password/change'" type="button">
+      Change Password
+    </button>
+  </div>
+</div>
+</body>
+</html>
