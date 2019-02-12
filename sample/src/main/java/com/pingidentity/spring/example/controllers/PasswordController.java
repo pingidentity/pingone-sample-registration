@@ -59,11 +59,12 @@ public class PasswordController {
         return "recoverPassword";
       } else {
         messagesService.error(model.asMap(),
-            "Password recovering failed because of " + responseEntity.getStatusCode() + responseEntity.getBody());
+            "Forgot password failed with status:" + responseEntity.getStatusCode() + " having in response "
+                + responseEntity.getBody());
         return "forgotPassword";
       }
     } catch (Exception e) {
-      messagesService.error(model.asMap(), "Password recovering failed. ", e);
+      messagesService.error(model.asMap(), "Password recovery failed. ", e);
       return "forgotPassword";
     }
   }
@@ -76,14 +77,15 @@ public class PasswordController {
               .getPassword());
       if (responseEntity.getStatusCode().is2xxSuccessful()) {
         messagesService
-            .success((Map<String, Object>) redirectAttrs.getFlashAttributes(), "Password recovering succeeded. ");
+            .success((Map<String, Object>) redirectAttrs.getFlashAttributes(), "Password recovery succeeded. ");
         return "redirect:/login";
       } else {
         messagesService.error(model.asMap(),
-            "Password recovering failed because of " + responseEntity.getStatusCode() + responseEntity.getBody());
+            "Password recovery failed with status: " + responseEntity.getStatusCode() + " having in response "
+                + responseEntity.getBody());
       }
     } catch (Exception e) {
-      messagesService.error(model.asMap(), "Could not recover a password. ", e);
+      messagesService.error(model.asMap(), "Could not recover password. ", e);
     }
     return "recoverPassword";
 
@@ -101,10 +103,12 @@ public class PasswordController {
           user.getPassword());
       if (!result.getStatusCode().is2xxSuccessful()) {
         messagesService
-            .error(model.asMap(), "User password was not properly reset" + result.getStatusCode() + result.getBody());
+            .error(model.asMap(),
+                "User password reset failed with status: " + result.getStatusCode() + " having in response " + result
+                    .getBody());
       }
     } catch (Exception e) {
-      messagesService.error(model.asMap(), "Could not reset a password. ", e);
+      messagesService.error(model.asMap(), "Could not reset password. ", e);
     }
     return "changePassword";
   }
@@ -118,7 +122,7 @@ public class PasswordController {
         userId = result.getBody().getUsers().stream().findFirst().get().getId();
       } else {
         throw new RuntimeException(
-            "Password recovering failed because there is no such user with user name: " + user.getUsername());
+            "There is no such user with a name: " + user.getUsername());
       }
     }
     return userId;

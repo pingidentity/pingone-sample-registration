@@ -5,7 +5,6 @@ import com.pingidentity.spring.example.services.MessagesService;
 import com.pingidentity.spring.example.services.PasswordManagementService;
 import com.pingidentity.spring.example.services.PopulationService;
 import com.pingidentity.spring.example.services.UserService;
-import java.util.HashMap;
 import java.util.Map;
 import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Slf4j
@@ -61,15 +59,15 @@ public class RegistrationController {
         User newUser = result.getBody();
         userId = newUser.getId();
         ResponseEntity<Map> passwordResult = passwordManagementService
-            .setPassword(newUser.getPasswordSet().getHref(), user.getPassword());
+            .setPassword(newUser.getPasswordSet().getHref(), user.getPassword(), false);
         if (passwordResult.getStatusCode() == HttpStatus.OK) {
           messagesService
               .success((Map<String, Object>) redirectAttrs.getFlashAttributes(), "User was properly created. ");
           return "redirect:/login";
         } else {
           messagesService.error(model.asMap(),
-              "User password was not properly set" + (passwordResult != null ? "" + passwordResult.getStatusCode()
-                  + passwordResult.getBody() : ""));
+              "Setting user password failed" + (passwordResult != null ? " with status: " + passwordResult
+                  .getStatusCode() + " having in response " + passwordResult.getBody() : ""));
         }
       }
     } catch (Exception e) {
@@ -78,6 +76,7 @@ public class RegistrationController {
 
     // Cleanup all data in case of unsuccessful user create operation
     model.addAttribute("populations", populationService.getAllPopulations().getPopulations());
+    model.addAttribute("passwordPattern", passwordManagementService.getPasswordPattern());
     if (userId != null) {
       userService.deleteUser(userId);
     }
