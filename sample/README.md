@@ -35,16 +35,33 @@ Most of PingOne platform scopes are self-explanatory, but if you need more detai
 3. Enable both applications in Ping14C admin console.
 
 4. Configure your spring application configuration `application.yml` by replacing all `<...>` placeholders with the following information:
-    - your environment ID in `ping.environmentId`
+    - `<environment_id>` with your environment ID
     - Non-interactive (or Web) Application configuration in `oauth2.client` path copying over data from corresponding application from Ping14C admin console:
-      - `clientId`
-      - `clientSecret`
-      - `accessTokenUri`
-      - `userAuthorizationUri`
-      - `scopes` (adjust it to your use cases)
+      - `<client_credentials_client_id>` with your client id (in `client-id` variable)
+      - `<client_credentials_client_secret>` with your client secret (in `client-secret` variable)
     - Native (or Web) Application configuration in `spring.security.oauth2.client` path 
-      - `spring.security.oauth2.client.registration.pingidentity`: `client-id`,`client-secret`, `provider` (can be renamed to other one, but should be correlative with `spring.security.oauth2.client.provider` name)
-      - `spring.security.oauth2.client.provider.pingidentity`: `issuer-uri`
+      - `<authorization_code_client_id>` with your client id (in `clientId` variable)
+      - `<authorization_code_client_client_credentials_client_secret>` with your client secret (in `clientSecret` variable)
+
+
+## PingOne for Customers API used in this sample
+### Authentication API:
+|    Endpoint   |    Description   |
+| ------------- |------------- |
+| [`POST /{environmentId}/as/authorize`](https://apidocs.pingidentity.com/pingone/customer/v1/api/auth/p1-a_Authorize/#Authorization-request-with-a-code-grant)  | Authorization request with a code grant (__spring__ uses under the hood) |
+| [`POST /{environmentId}/as/token`](https://apidocs.pingidentity.com/pingone/customer/v1/api/auth/p1-a_Authorize/#Obtain-an-access-token)  | Obtain an access token by presenting its authorization grant (__spring__ uses under the hood) |
+| [`GET /{environmentID}/as/.well-known/openid-configuration`](https://apidocs.pingidentity.com/pingone/customer/v1/api/auth/p1-a_Authorize/#Obtain-OpenID-provider-configuration-information)  | Get OpenID Connect provider metadata document for the issuer (__spring__ uses under the hood) |
+| [`GET /{environmentId}/as/userinfo`](https://apidocs.pingidentity.com/pingone/customer/v1/api/auth/p1-a_Authorize/#UserInfo-endpoint)  | Get token claims about the authenticated end user ( used for `Show User Information` button) ||
+
+### Management API:
+| Service Name  |    Endpoint   |    Description   |
+| ------------- | ------------- |------------- |
+| Populations   | [`GET /environments/{environmentId}/populations`](https://apidocs.pingidentity.com/pingone/customer/v1/api/man/p1_Populations/#Get-populations)  |Get all populations for a new user registration |
+| Password policies  | [`GET /environments/{environmentId}/passwordPolicies`](https://apidocs.pingidentity.com/pingone/customer/v1/api/man/p1_Passwords/#Get-one-password-policy)  |Get all password policies for an environment to get the default one. It will be used for password verification on the client side   |
+| User password management  | [`PUT /environments/{environmentId}/users/{userId}/password`](https://apidocs.pingidentity.com/pingone/customer/v1/api/man/p1_Users/p1_Password/#Update-a-users-password)  | Update a password: self-change password update and administrative-change reset of user password |
+|  | [`POST /environments/{environmentId}/users/{userId}/password`](https://apidocs.pingidentity.com/pingone/customer/v1/api/man/p1_Users/p1_Password/#Recover-password)  | Recover a forgotten password |
+| Users | [`GET /environments/{environmentId}/users?filter=name.family%20eq%20%22Smith%22%20and%20name.given%20sw%20%22W%22`](https://apidocs.pingidentity.com/pingone/customer/v1/api/man/p1_Users/#Users)  | Find a user by his name or email for further usage of his ID |
+|  | [`POST /environments/{environmentId}/users`](https://apidocs.pingidentity.com/pingone/customer/v1/api/man/p1_Users/#Users)  | Create new user |
 
 
 ## Developer Tips
