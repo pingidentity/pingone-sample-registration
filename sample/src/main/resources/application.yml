@@ -32,7 +32,7 @@ spring:
             client-id: <authorization_code_client_id>
             client-secret: <authorization_code_client_client_credentials_client_secret>
             provider: pingidentity
-            scope: openid,profile,phone,email,address,p1:reset:self:userPassword,p1:set:env:userPassword
+            scope: openid,profile,phone,email,address,p1:reset:userPassword,p1:set:env:userPassword
             client-authentication-method: post
             authorization-grant-type: authorization_code
             redirect-uri-template: "{baseUrl}/login/oauth2/code/{registrationId}"

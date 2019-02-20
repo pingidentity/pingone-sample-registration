@@ -28,7 +28,7 @@ Since we are using Thymeleaf template engine, you can benefit from `spring.thyme
  
  - Native or Web Application (for Authorization Code Application Type) with such list of OIDC and PingOne platform `scope`'s:
     - OIDC: `openid,profile,phone,email,address`
-    - PingOne's : `p1:reset:self:userPassword`, `p1:set:env:userPassword` - to change user password by the user
+    - PingOne's : `p1:reset:userPassword`, `p1:set:env:userPassword` - to change user password by the user
 
 Most of PingOne platform scopes are self-explanatory, but if you need more details about them please check ["Configure access through scopes"](https://apidocs.pingidentity.com/pingone/customer/v1/api/auth/p1-a_AuthActivities/p1-a_AccessServices/) part.
 
