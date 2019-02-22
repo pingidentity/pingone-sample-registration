@@ -1,0 +1,45 @@
+server:
+  port: 8080
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    org.springframework.security: INFO
+    org.springframework.security.oauth2: INFO
+    org.springframework.boot.autoconfigure: INFO
+
+ping:
+  environmentId: <environment_id>
+
+oauth2:
+  client:
+    clientId: <client_credentials_client_id>
+    clientSecret: <client_credentials_client_secret>
+    accessTokenUri: https://auth.pingone.com/<environment_id>/as/token
+    userAuthorizationUri: https://auth.pingone.com/<environment_id>/as/authorize
+    scope: p1:create:env:user,p1:read:env:user,p1:delete:env:user,p1:read:env:population,p1:read:env:userPassword,p1:set:env:userPassword,p1:read:env:passwordPolicy,p1:recover:env:userPassword
+    authorizationGrantType: client_credentials
+
+spring:
+  thymeleaf:
+    cache: false
+  security:
+    oauth2:
+      client:
+        registration:
+          pingidentity:
+            client-id: <authorization_code_client_id>
+            client-secret: <authorization_code_client_client_credentials_client_secret>
+            provider: pingidentity
+            scope: openid,profile,phone,email,address,p1:reset:userPassword,p1:set:env:userPassword
+            client-authentication-method: post
+            authorization-grant-type: authorization_code
+            redirect-uri-template: "{baseUrl}/login/oauth2/code/{registrationId}"
+        provider:
+          pingidentity:
+            issuer-uri: https://auth.pingone.com/<environment_id>/as
+  mvc:
+    favicon:
+      enabled: false
+

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:fragment="head">
+  <meta charset="utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link rel="stylesheet" href="https://cdn.shoelace.style/1.0.0-beta24/shoelace.css">
+</head>
+
+<body>
+<div class="sign-in-container" th:fragment="sign-in-container">
+
+  <div th:if="${message}" th:text="${message}" th:class="${'alert alert-' + alertClass}" th:fragment="alert">
+    <span class="closebtn" style="margin-left: 15px; color: white;
+          font-weight: bold;
+          float: right;
+          font-size: 22px;
+          line-height: 20px;
+          cursor: pointer;
+          transition: 0.3s;"
+          onmouseover="this.style.color='black'" onmouseout="this.style.color='white'"
+          onclick="this.parentElement.style.display='none'">&times;</span>
+  </div>
+  <div th:unless="${#authorization?.expression('isAuthenticated()')}">
+    <p>You are not currently authenticated. Click Sign On to get started.</p>
+  </div>
+
+  <div th:if="${#authorization?.expression('isAuthenticated()')}">
+
+    <!-- Show user information from user info endpoint (OIDC case)-->
+    <div th:if="${#authentication?.principal.userInfo}">
+      <div th:if="${#authentication?.principal.userInfo.claims.get('given_name')}">
+        <p>Hello, <span th:text="${#authentication?.principal.userInfo.claims.get('given_name')}">Incognito</span>!</p>
+      </div>
+      <span>Select "Show User ID Token Information" to view all attributes included in the issued
+            ID Token.</span>
+      <p>Select "Show User Information" to check only user information.</p>
+      <p>Click Sign Off to switch users.</p>
+
+      <div>
+        <br>
+        <button id="show-user-info-button" type="submit" class="button-secondary" th:onclick="|showUserInfo()|">
+          Show User Information
+        </button>
+        <div id="show-user-info" style="display: none">
+
+          <table class="table table-striped">
+            <thead>
+            <tr>
+              <th>Name</th>
+              <th>Value</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${userInfo}">
+              <td th:text="${item.key}">Key</td>
+              <td th:id="${'user-' + item.key}" th:text="${item.value}">Value</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="input-field">
+      <br>
+      <button id="show-token-info-button" type="submit" class="button-secondary" th:onclick="|showTokenInfo()|">
+        Show User ID Token Information
+      </button>
+      <div id="show-token-info" style="display: none">
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th>Claim</th>
+            <th>Value</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="item : ${details}">
+            <td th:text="${item.key}">Key</td>
+            <td th:id="${'claim-' + item.key}" th:text="${item.value}">Value</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="input-field">
+      <form method="post" th:action="@{/logout}">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <button id="logout-button" type="submit">Sign Off</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="input-field">
+    <form method="get" th:action="${url}" th:unless="${#authorization?.expression('isAuthenticated()')}">
+      <button id="login-button" type="submit">Sign On</button>
+    </form>
+  </div>
+</div>
+
+<script th:inline="javascript" th:fragment="sign-in-container-js">
+
+  function showTokenInfo() {
+    var tokenInfoView = document.getElementById('show-token-info');
+    var tokenInfoBtn = document.getElementById('show-token-info-button');
+    if (tokenInfoView.style.display == 'none') {
+      tokenInfoBtn.innerHTML = 'Hide User Id Token Information';
+      tokenInfoView.style.display = 'block';
+    } else {
+      tokenInfoBtn.innerHTML = 'Show User Id Token Information';
+      tokenInfoView.style.display = 'none';
+    }
+  }
+
+  function showUserInfo() {
+    var userInfoView = document.getElementById('show-user-info');
+    var userInfoBtn = document.getElementById('show-user-info-button');
+    if (userInfoView.style.display == 'none') {
+      userInfoBtn.innerHTML = 'Hide User Information';
+      userInfoView.style.display = 'block';
+    } else {
+      userInfoBtn.innerHTML = 'Show User Information';
+      userInfoView.style.display = 'none';
+    }
+  }
+</script>
+</body>
+</html>
