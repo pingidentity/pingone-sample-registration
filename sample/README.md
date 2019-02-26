@@ -16,8 +16,8 @@ It samples such flows like - register a new user, update user password by logged
 You may want to add additional dependency to make your application development experience a little more pleasant, like [`<artifactId>spring-boot-devtools</artifactId>`](https://docs.spring.io/spring-boot/docs/current/reference/html/using-boot-devtools.html)
 Since we are using Thymeleaf template engine, you can benefit from `spring.thymeleaf.cache` that controls compiled templates cache to avoid repeatedly parsing template files.
 
-2. Create two applications through Ping14C admin console with the following configurations:
- - Non-interactive or Web Application (for Client Credentials Application Type) with such list of PingOne platform `scope`'s:
+2. Create two [applications](https://apidocs.pingidentity.com/pingone/customer/v1/api/auth/p1-a_AuthActivities/p1-a_appAuth/) through Ping14C admin console with the following configurations:
+ - __Non-interactive or Advanced Configuration__ (with *Client Credentials* Grant Type) with such list of PingOne platform `scope`'s:
     - `p1:create:env:user` - to create a new user
     - `p1:read:env:user` - to find a user by email or name before resetting its password
     - `p1:delete:env:user` - to delete a user when its passwords doesn't meet password policy requirements and application stop the registration process. User creation and password setting are 2 different endpoints. 
@@ -26,7 +26,7 @@ Since we are using Thymeleaf template engine, you can benefit from `spring.thyme
     - `p1:read:env:passwordPolicy` - to get default password policy for password client side verification
     - `p1:recover:env:userPassword` - to recover a forgotten password
  
- - Native or Web Application (for Authorization Code Application Type) with such list of OIDC and PingOne platform `scope`'s:
+ - __Native, Single Page or Web Application__ (with *Authorization Code* or *Implicit* Grant Type) with such list of OIDC and PingOne platform `scope`'s:
     - OIDC: `openid,profile,phone,email,address`
     - PingOne's : `p1:reset:userPassword`, `p1:set:env:userPassword` - to change user password by the user
 
@@ -36,10 +36,10 @@ Most of PingOne platform scopes are self-explanatory, but if you need more detai
 
 4. Configure your spring application configuration `application.yml` by replacing all `<...>` placeholders with the following information:
     - `<environment_id>` with your environment ID
-    - Non-interactive (or Web) Application configuration in `oauth2.client` path copying over data from corresponding application from Ping14C admin console:
+    - __Non-interactive (or Advanced Configuration) Application__ configuration in `oauth2.client` path copying over data from corresponding application from Ping14C admin console:
       - `<client_credentials_client_id>` with your client id (in `client-id` variable)
       - `<client_credentials_client_secret>` with your client secret (in `client-secret` variable)
-    - Native (or Web) Application configuration in `spring.security.oauth2.client` path 
+    - __Native (Single Page or Web) Application__ configuration in `spring.security.oauth2.client` path 
       - `<authorization_code_client_id>` with your client id (in `clientId` variable)
       - `<authorization_code_client_client_credentials_client_secret>` with your client secret (in `clientSecret` variable)
 
@@ -48,7 +48,7 @@ Most of PingOne platform scopes are self-explanatory, but if you need more detai
 ### Authentication API:
 |    Endpoint   |    Description   |
 | ------------- |------------- |
-| [`POST /{environmentId}/as/authorize`](https://apidocs.pingidentity.com/pingone/customer/v1/api/auth/p1-a_Authorize/#Authorization-request-with-a-code-grant)  | Authorization request with a code grant (__spring__ uses under the hood) |
+| [`POST /{environmentId}/as/authorize`](https://apidocs.pingidentity.com/pingone/customer/v1/api/auth/p1-a_Authorize/#Authorization-request-with-a-code-grant) | Authorization request with a code grant (__spring__ uses under the hood). `prompt=login` parameter is used by default |
 | [`POST /{environmentId}/as/token`](https://apidocs.pingidentity.com/pingone/customer/v1/api/auth/p1-a_Authorize/#Obtain-an-access-token)  | Obtain an access token by presenting its authorization grant (__spring__ uses under the hood) |
 | [`GET /{environmentID}/as/.well-known/openid-configuration`](https://apidocs.pingidentity.com/pingone/customer/v1/api/auth/p1-a_Authorize/#Obtain-OpenID-provider-configuration-information)  | Get OpenID Connect provider metadata document for the issuer (__spring__ uses under the hood) |
 | [`GET /{environmentId}/as/userinfo`](https://apidocs.pingidentity.com/pingone/customer/v1/api/auth/p1-a_Authorize/#UserInfo-endpoint)  | Get token claims about the authenticated end user ( used for `Show User Information` button) ||
@@ -56,8 +56,8 @@ Most of PingOne platform scopes are self-explanatory, but if you need more detai
 ### Management API:
 | Service Name  |    Endpoint   |    Description   |
 | ------------- | ------------- |------------- |
-| Populations   | [`GET /environments/{environmentId}/populations`](https://apidocs.pingidentity.com/pingone/customer/v1/api/man/p1_Populations/#Get-populations)  |Get all populations for a new user registration |
-| Password policies  | [`GET /environments/{environmentId}/passwordPolicies`](https://apidocs.pingidentity.com/pingone/customer/v1/api/man/p1_Passwords/#Get-one-password-policy)  |Get all password policies for an environment to get the default one. It will be used for password verification on the client side   |
+| Populations   | [`GET /environments/{environmentId}/populations`](https://apidocs.pingidentity.com/pingone/customer/v1/api/man/p1_Populations/#Get-populations)  | Get all populations for a new user registration |
+| Password policies  | [`GET /environments/{environmentId}/passwordPolicies`](https://apidocs.pingidentity.com/pingone/customer/v1/api/man/p1_Passwords/#Get-one-password-policy)  | Get all password policies for an environment to get the default one. It will be used for password verification on the client side   |
 | User password management  | [`PUT /environments/{environmentId}/users/{userId}/password`](https://apidocs.pingidentity.com/pingone/customer/v1/api/man/p1_Users/p1_Password/#Update-a-users-password)  | Update a password: self-change password update and administrative-change reset of user password |
 |  | [`POST /environments/{environmentId}/users/{userId}/password`](https://apidocs.pingidentity.com/pingone/customer/v1/api/man/p1_Users/p1_Password/#Recover-password)  | Recover a forgotten password |
 | Users | [`GET /environments/{environmentId}/users?filter=name.family%20eq%20%22Smith%22%20and%20name.given%20sw%20%22W%22`](https://apidocs.pingidentity.com/pingone/customer/v1/api/man/p1_Users/#Users)  | Find a user by his name or email for further usage of his ID |
