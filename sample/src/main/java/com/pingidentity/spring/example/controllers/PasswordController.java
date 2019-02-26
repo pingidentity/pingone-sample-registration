@@ -95,7 +95,7 @@ public class PasswordController {
    * Self-change reset of the password identified by the user ID and environment ID.
    */
   @PostMapping("/change")
-  public String changePassword(@ModelAttribute User user, Model model, OAuth2AuthenticationToken authentication) {
+  public String changePassword(@ModelAttribute User user, Model model, OAuth2AuthenticationToken authentication, RedirectAttributes redirectAttrs) {
     try {
       ResponseEntity<Map> result = passwordManagementService.changePassword(
           (String) authentication.getPrincipal().getAttributes().get("sub"),
@@ -106,6 +106,10 @@ public class PasswordController {
             .error(model.asMap(),
                 "User password reset failed with status: " + result.getStatusCode() + " having in response " + result
                     .getBody());
+      } else {
+        messagesService
+            .success((Map<String, Object>) redirectAttrs.getFlashAttributes(), "Password change succeeded. ");
+        return "redirect:/login";
       }
     } catch (Exception e) {
       messagesService.error(model.asMap(), "Could not reset password. ", e);

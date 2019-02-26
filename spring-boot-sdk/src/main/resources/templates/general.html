@@ -26,44 +26,42 @@
   </div>
 
   <div th:if="${#authorization?.expression('isAuthenticated()')}">
-
     <!-- Show user information from user info endpoint (OIDC case)-->
-    <div th:if="${#authentication?.principal.userInfo}">
-      <div th:if="${#authentication?.principal.userInfo.claims.get('given_name')}">
-        <p>Hello, <span th:text="${#authentication?.principal.userInfo.claims.get('given_name')}">Incognito</span>!</p>
+    <div th:if="${userInfo}">
+      <div th:if="${userInfo.get('given_name')}">
+        <p>Hello, <strong th:text="${userInfo.get('given_name')}">Incognito</strong>!</p>
       </div>
-      <span>Select "Show User ID Token Information" to view all attributes included in the issued
-            ID Token.</span>
-      <p>Select "Show User Information" to check only user information.</p>
-      <p>Click Sign Off to switch users.</p>
+      <span>Select "Show User Information" to check only user information.</span>
+    </div>
 
-      <div>
-        <br>
-        <button id="show-user-info-button" type="submit" class="button-secondary" th:onclick="|showUserInfo()|">
-          Show User Information
-        </button>
-        <div id="show-user-info" style="display: none">
+    <div>Select "Show User ID Token Information" to view all attributes included in the issued ID Token.</div>
+    <div>Click Sign Off to switch users.</div>
 
-          <table class="table table-striped">
-            <thead>
-            <tr>
-              <th>Name</th>
-              <th>Value</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="item : ${userInfo}">
-              <td th:text="${item.key}">Key</td>
-              <td th:id="${'user-' + item.key}" th:text="${item.value}">Value</td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
+    <div class="userInfoPart input-field" th:if="${userInfo}">
+      <br>
+      <button id="show-user-info-button" type="submit" class="button-secondary" th:onclick="|showUserInfo()|">
+        Show User Information
+      </button>
+      <div id="show-user-info" style="display: none">
+
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th>Name</th>
+            <th>Value</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="item : ${userInfo}">
+            <td th:text="${item.key}">Key</td>
+            <td th:id="${'user-' + item.key}" th:text="${item.value}">Value</td>
+          </tr>
+          </tbody>
+        </table>
       </div>
     </div>
 
-    <div class="input-field">
-      <br>
+    <div class="tokenInfoPart input-field">
       <button id="show-token-info-button" type="submit" class="button-secondary" th:onclick="|showTokenInfo()|">
         Show User ID Token Information
       </button>
@@ -85,7 +83,7 @@
       </div>
     </div>
 
-    <div class="input-field">
+    <div class="logoutPart input-field">
       <form method="post" th:action="@{/logout}">
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
         <button id="logout-button" type="submit">Sign Off</button>
@@ -93,7 +91,7 @@
     </div>
   </div>
 
-  <div class="input-field">
+  <div class="loginPart input-field">
     <form method="get" th:action="${url}" th:unless="${#authorization?.expression('isAuthenticated()')}">
       <button id="login-button" type="submit">Sign On</button>
     </form>
