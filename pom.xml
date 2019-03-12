@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
   <modelVersion>4.0.0</modelVersion>
+
   <groupId>com.pingidentity.samples</groupId>
-  <artifactId>parent</artifactId>
-  <packaging>pom</packaging>
+  <artifactId>user-registration-sample</artifactId>
   <version>0.0.1-SNAPSHOT</version>
 
   <parent>
@@ -13,6 +12,7 @@
     <artifactId>spring-boot-starter-parent</artifactId>
     <version>2.1.1.RELEASE</version>
   </parent>
+
   <properties>
     <spring-boot.version>2.1.1.RELEASE</spring-boot.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -20,9 +20,50 @@
     <java.version>1.8</java.version>
   </properties>
 
-  <modules>
-    <module>spring-boot-sdk</module>
-    <module>sample</module>
-  </modules>
+  <name>user-registration-sample</name>
+
+  <dependencies>
+
+    <dependency>
+      <groupId>com.pingidentity.samples</groupId>
+      <artifactId>spring-boot-sdk</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-devtools</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
+
+  <repositories>
+    <repository>
+      <id>github</id>
+      <url>https://raw.github.com/pingidentity/pingone-customers-spring-boot-tools/mvn-repo/</url>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+      </snapshots>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+    </repository>
+  </repositories>
 
 </project>
