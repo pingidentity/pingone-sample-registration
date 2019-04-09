@@ -4,6 +4,10 @@ and some PingOne for Customers (Ping14C) Authentication and Management API servi
 
 It samples such flows like - register a new user, update user password by logged in user or by application itself, and recover a forgotten password scenario.
 
+## Implementation Tutorial Video
+
+A tutorial video detailing the implementation of this sample application is available on YouTube: [https://youtu.be/PbtvtXv3ZnE](https://youtu.be/PbtvtXv3ZnE)
+
 ## Installation Steps
 1. Add Ping14C `spring-boot-sdk` artifact to your pom:
 ```xml
