@@ -39,14 +39,8 @@ Please don't forget to set `OAUTH2TOKEN` as environment variable(if you are usin
 ``` 
 
 3. Create two [applications](https://apidocs.pingidentity.com/pingone/customer/v1/api/auth/p1-a_AuthActivities/p1-a_appAuth/) through Ping14C admin console with the following configurations:
- - __Non-interactive or Advanced Configuration__ (with *Client Credentials* Grant Type) with such list of PingOne platform `scope`'s:
-    - `p1:create:env:user` - to create a new user
-    - `p1:read:env:user` - to find a user by email or name before resetting its password
-    - `p1:delete:env:user` - to delete a user when its passwords doesn't meet password policy requirements and application stop the registration process. User creation and password setting are 2 different endpoints. 
-    - `p1:read:env:population` - to get environment population a new user will belong to (registration flow) 
-    - `p1:set:env:userPassword` - to set user password on new user registration
-    - `p1:read:env:passwordPolicy` - to get default password policy for password client side verification
-    - `p1:recover:env:userPassword` - to recover a forgotten password
+ - __Worker__ Application with default options.
+    Note that this Worker application instance will inherit the same Roles as the user who creates the instance. These Roles can be edited after the application instance is created.
  
  - __Native, Single Page or Web Application__ (with *Authorization Code* or *Implicit* Grant Type) with such list of OIDC and PingOne platform `scope`'s:
     - OIDC: `openid,profile,phone,email,address`
@@ -58,7 +52,7 @@ Most of PingOne platform scopes are self-explanatory, but if you need more detai
 
 5. Configure your spring application configuration `application.yml` by replacing all `<...>` placeholders with the following information:
     - `<environment_id>` with your environment ID
-    - __Non-interactive (or Advanced Configuration) Application__ configuration in `oauth2.client` path copying over data from corresponding application from Ping14C admin console:
+    - __Worker Application__ configuration in `oauth2.client` path copying over data from corresponding application from Ping14C admin console:
       - `<client_credentials_client_id>` with your client id (in `client-id` variable)
       - `<client_credentials_client_secret>` with your client secret (in `client-secret` variable)
     - __Native (Single Page or Web) Application__ configuration in `spring.security.oauth2.client` path 
