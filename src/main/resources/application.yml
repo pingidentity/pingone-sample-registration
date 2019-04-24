@@ -11,6 +11,9 @@ logging:
 
 ping:
   environmentId: <environment_id>
+  registration:
+    # Filter user populations to which the user will belong to while registration
+    filterPopulationByDescription: true
 
 oauth2:
   client:

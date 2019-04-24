@@ -70,7 +70,7 @@
       </ul>
     </div>
 
-    <div class="input-field">
+    <div class="input-field" th:if="${populations}">
       <label th:for="population">Population</label>
       <select th:field="*{population}">
         <option th:each="population : ${populations}"
