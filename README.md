@@ -88,8 +88,12 @@ Most of PingOne platform scopes are self-explanatory, but if you need more detai
 
 __application.yml__
 + `authorizationGrantType` or `authorization-grant-type`: OAuth 2.0 defines four authorization grant types, but Spring Boot supports only 3: authorization_code, implicit, and client_credentials.
++ `filterPopulationByDescription`: whether to do an automatic filtering of a population to which the user will belong to while registration.
+That selection is based on combination of population description and user email domain. For example: if the user typed `user@example.com` as his email, then it will be registered in the first found population, that contains `example.com` text in its description. Also, population description can have a couple of domains (separated by comma), by which the search was be looking through: i.e `example.com, examples.com, new-example.com`.
+Is set to false, by default. 
+
 
 __pom.xml__
-+ [`<artifactId>spring-boot-devtools</artifactId>`](https://docs.spring.io/spring-boot/docs/current/reference/html/using-boot-devtools.html) - set of tools that can make the application development experience a little more pleasant.
-+ [`<artifactId>spring-boot-sdk</artifactId>`](https://github.com/pingidentity/pingone-customers-spring-boot-tools/tree/mvn-repo/com/pingidentity/samples/spring-boot-sdk) - PingOne for Customers spring-boot SDK that is temporarily stored in github raw
++ [`<artifactId>spring-boot-devtools</artifactId>`](https://docs.spring.io/spring-boot/docs/current/reference/html/using-boot-devtools.html): set of tools that can make the application development experience a little more pleasant.
++ [`<artifactId>spring-boot-sdk</artifactId>`](https://github.com/pingidentity/pingone-customers-spring-boot-tools/tree/mvn-repo/com/pingidentity/samples/spring-boot-sdk): PingOne for Customers spring-boot SDK that is temporarily stored in github raw
 
