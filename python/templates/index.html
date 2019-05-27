@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+{% block body %}
+<br>
+<p><a href="/register" class="button">Register New User</a></p>
+<p><a href="/password/forgot" class="button">Forgot Password</a></p>
+
+<script src="{{url_for('static', filename='helpers.js')}}"></script>
+
+{% endblock %}

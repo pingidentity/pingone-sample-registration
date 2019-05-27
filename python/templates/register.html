@@ -1,0 +1,71 @@
+{% extends "layout.html" %}
+{% block body %}
+
+{% if session['oauth_token'] %}
+<form action="register" method="post">
+
+    <h3> Create a New User </h3>
+    <br>
+
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+    <div class="input-field">
+        <label class="username">Username</label>
+        <input type="text" name="username" placeholder="Username" required autofocus/>
+    </div>
+
+    <div class="input-field">
+        <label class="email">Email</label>
+        <input type="email" name="email" placeholder="Email" required autofocus/>
+    </div>
+
+    <div class="input-field">
+        <label class="password">Password</label>
+        <div class="input-group">
+            <input type="password" name="password" id="password" placeholder="Password" required autofocus
+                   {% if passwordPattern is defined and passwordPattern is not none %} pattern="{{passwordPattern}}"
+                   {% endif %} />
+            <label class="input-addon">
+                <input type="checkbox" style="display:none" onclick="toggleSecret(event, this)">
+                <span><i class="fa fa-fw fa-eye"></i></span>
+            </label>
+        </div>
+    </div>
+
+    <div class="input-field">
+        <label class="confirmPassword">Confirm Password</label>
+        <div class="input-group">
+            <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm password" required autofocus
+                   {% if passwordPattern is defined and passwordPattern is not none %} pattern="{{passwordPattern}}"
+                   {% endif %} />
+            <label class="input-addon">
+                <input type="checkbox" style="display:none" onclick="toggleSecret(event, this)">
+                <span><i class="fa fa-fw fa-eye"></i></span>
+            </label>
+        </div>
+    </div>
+
+    <div class="input-field">
+        <label class="population">Population</label>
+        <select name="population">
+            {% for population in populations %}
+            <option value="{{ population.id|e }}">{{population.name}}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="input-group">
+        <button class="button" type="submit">Create user</button>
+    </div>
+</form>
+
+<div class="input-group">
+    <p><a href="/">Back to home page</a></p>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+<script src="{{url_for('static', filename='passwords.js')}}"></script>
+{% endif %}
+
+{% endblock %}
+
