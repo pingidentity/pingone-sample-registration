@@ -17,8 +17,8 @@ It uses `client_credentials` grant type to obtain an access token, thereby it by
 
 # Prerequisites
 You will need the following things:
-- PingOne for Customers Account  - If you don’t have an existing one, please register it.
-- An worker application. Instructions for 
+- PingOne for Customers Account  - If you don’t have an existing one, please register for a Free Trial Account here: https://developer.pingidentity.com
+- A Worker application instance. Instructions for 
 creating one can be found [here](https://apidocs.pingidentity.com/pingone/customer/v1/api/guide/p1_gettingStarted/#Configure-an-application-connection). 
 - To have installed [Python 3](https://www.python.org/downloads/)
 
@@ -26,14 +26,14 @@ creating one can be found [here](https://apidocs.pingidentity.com/pingone/custom
 1. Copy this source code: `git clone https://github.com/pingidentity/pingone-customers-sample-oidc.git
  cd python`
 
-2. If you don't use IDE that has its way to configure a virtual environment ([virtualenv](http://www.virtualenv.org/en/latest/index.html)), then you can create one with: `python3 -m venv _venv`
+2. If you don't use an IDE that is able to configure a virtual environment ([virtualenv](http://www.virtualenv.org/en/latest/index.html)), then you can create one with: `python3 -m venv _venv`
 where `_venv` is a path to a new virtual environment
 Once a virtual environment has been created, it then should be “activated” via: `source _venv/bin/activate`
 
-3. Install all requirements by: `pip3 install -r requirements.txt`
+3. Install all requirements using: `pip3 install -r requirements.txt`
 
-4. Grab the following worker application configuration information from the admin console to replace placeholders in [config.cfg](config.cfg) with it: **ENVIRONMENT_ID**, **CLIENT_ID**, **CLIENT_SECRET** , **OAUTH_REDIRECT_PATH**
-5. Start an application by: `python3 app.py`
+4. Grab the following Worker application configuration information from the admin console to replace placeholders in [config.cfg](config.cfg) with it: **ENVIRONMENT_ID**, **CLIENT_ID**, **CLIENT_SECRET** , **OAUTH_REDIRECT_PATH**
+5. Start an application using: `python3 app.py`
 
 ## Libraries Used
 - [Flask Message Flashing](http://flask.pocoo.org/docs/1.0/patterns/flashing/)
@@ -42,11 +42,11 @@ Once a virtual environment has been created, it then should be “activated” v
 
 ## Developer Notes
 ###  SSL Layer
-1. Since Oauth2 works through SSL layer, if your server is not parametrized to allow HTTPS, the `fetch_token` method will raise an [oauthlib.oauth2.rfc6749.errors.InsecureTransportError](https://requests-oauthlib.readthedocs.io/en/latest/examples/real_world_example.html). 
-So, while testing, you can disable Oauth2 check by uncommenting the `os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = 'true'` in [app.py](app.py).
- For more information check [this](http://requests-oauthlib.readthedocs.org/en/latest/examples/real_world_example.html) article.
-1. For the simplicity. on-the-fly certificates are used, which are useful to quickly serve an application over HTTPS without having to mess with certificates: ``ssl_context='adhoc'``. But note that each time the server runs, a different certificate is generated on the fly through pyOpenSSL.
-So you can generate self-signed certificate(i.e with openssl) and by setting the `ssl_context` argument in app.run() to a tuple with the filenames of the certificate and private key files, that will be the same every time you launch your server
+1. Since OAuth2 works through an SSL layer, if your server is not configured for HTTPS, the `fetch_token` method will raise an [oauthlib.oauth2.rfc6749.errors.InsecureTransportError](https://requests-oauthlib.readthedocs.io/en/latest/examples/real_world_example.html). 
+So, while testing, you can disable the OAuth2 check by uncommenting the `os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = 'true'` in [app.py](app.py). 
+For more information check [this](http://requests-oauthlib.readthedocs.org/en/latest/examples/real_world_example.html) article.
+1. For simplicity, "on the fly" certificates are used, which are useful to quickly serve an application over HTTPS without having to deal with certificates: ``ssl_context='adhoc'``. But note that each time the server runs, a different certificate is generated on the fly through pyOpenSSL.
+You can generate a self-signed certificate (e.g. with openssl) and by setting the `ssl_context` argument in app.run() to a tuple with the filenames of the certificate and private key files that will be the same every time you launch your server
 for production please use real certificates
 
 ### CSRF Protection
