@@ -25,6 +25,7 @@ app.config.update({'SECRET_KEY': os.urandom(24)})
 csrf = CSRFProtect(app)
 auth = AuthClient(app)
 
+
 @app.before_request
 def make_session_permanent():
     session.permanent = True
@@ -127,10 +128,12 @@ def register():
                            populations=response.json()['_embedded'][
                                'populations'])
 
+
 def log_error(message, error):
     error_details = error.response.json().get('details')
     error_msg = error_details[0].get('message') if error_details else error.response.json().get('message')
     flash(message + str(error_msg), 'danger')
+
 
 @app.errorhandler(Exception)
 def handle_error(error):

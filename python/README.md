@@ -26,9 +26,11 @@ creating one can be found [here](https://apidocs.pingidentity.com/pingone/custom
 1. Copy this source code: `git clone https://github.com/pingidentity/pingone-customers-sample-oidc.git
  cd python`
 
-2. If you don't use an IDE that is able to configure a virtual environment ([virtualenv](http://www.virtualenv.org/en/latest/index.html)), then you can create one with: `python3 -m venv _venv`
-where `_venv` is a path to a new virtual environment
-Once a virtual environment has been created, it then should be “activated” via: `source _venv/bin/activate`
+2. If you have already different python projects, try to keep their dependencies separate by creating isolated python virtual environments for them.
+Otherwise, you can skip this step.
+    So, if you don't use an IDE that is able to configure a virtual environment ([virtualenv](http://www.virtualenv.org/en/latest/index.html)), then you can create one with: `python3 -m venv _venv`
+    where `_venv` is a path to a new virtual environment
+    Once a virtual environment has been created, it then should be “activated” via: `source _venv/bin/activate`
 
 3. Install all requirements using: `pip3 install -r requirements.txt`
 
@@ -60,3 +62,7 @@ To check coding conventions for the Python code see [Style Guide for Python Code
 1. Unlike cookie-based sessions, Flask sessions are handled and stored on the server-side. A session object is simply a dict which is accessible throughout the application a global level, referring to a single 'logged-in user'.
 1. Flask will suppress any server error with a generic error page unless it is in debug mode. As such to enable just the interactive debugger without the code reloading, you have to invoke run() with `debug=True` and `use_reloader=False`. 
 Setting `use_debugger` to True without being in debug mode won’t catch any exceptions because there won’t be any to catch.
+1. If you have seen an error like `“OSError: [Errno 8] Exec format error”` when running `python3 app.py` in debug mode (that is by default), then just add the following line (shebang) at the top of app.py:
+`#!/usr/bin/env python3` and make the file executable: `chmod +x flaskblog.py`. Then try again `python3 app.py`.
+    This may be because Flask is trying to run `app.py` directly on your system rather than with the python binary `python3 app.py`, that is not working since `app.py` isn't executable.
+1. Comment `ENV='development'` in [config.cfg](config.cfg) to disable [Debug Mode](http://flask.pocoo.org/docs/1.0/quickstart/#debug-mode).

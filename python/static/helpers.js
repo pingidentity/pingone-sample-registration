@@ -1,23 +1,4 @@
 /**
- * Get Access Token from the current page URL
- */
-function checkAccessTokenFromUrl() {
-  let url = window.location.href;
-  if (url.match('[?#&]access_token=([^&]*)')) {
-    let xhr = new XMLHttpRequest();
-    xhr.open("POST", "/callback", true);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.onreadystatechange = function() {
-      if(xhr.readyState === XMLHttpRequest.DONE && xhr.status == 200) {
-        // Clear the hash and reload the page
-        window.location.hash = '';
-        window.location.reload();
-      }
-    }
-    xhr.send("responseUrl=" + window.location.href);
-  }
-}
-/**
  * Get error from the current page URL
  */
 function checkErrorFromUrl() {
@@ -32,5 +13,4 @@ function checkErrorFromUrl() {
   }
 }
 
-checkAccessTokenFromUrl();
 checkErrorFromUrl();

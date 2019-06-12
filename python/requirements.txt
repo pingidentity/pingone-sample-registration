@@ -4,3 +4,4 @@ requests_oauthlib==1.2.0
 flask==1.0.2
 Flask-WTF==0.14.2
 PyJWT==1.7.1
+pyOpenSSL==18.0.0
