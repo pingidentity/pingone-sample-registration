@@ -30,8 +30,6 @@ public class OAuth2SecurityConfigurerAdapter extends WebSecurityConfigurerAdapte
   private String oAuth2ClientSecret;
   @Value("${oauth2.client.accessTokenUri}")
   private String accessTokenUri;
-  @Value("${oauth2.client.scope}")
-  private List<String> scope;
 
   @Bean
   public RestTemplate clientRestTemplate() {
@@ -40,7 +38,6 @@ public class OAuth2SecurityConfigurerAdapter extends WebSecurityConfigurerAdapte
     resourceDetails.setClientId(oAuth2ClientId);
     resourceDetails.setClientSecret(oAuth2ClientSecret);
     resourceDetails.setAccessTokenUri(accessTokenUri);
-    resourceDetails.setScope(scope);
     RestTemplate restTemplate = new OAuth2RestTemplate(resourceDetails, new DefaultOAuth2ClientContext());
     restTemplate.setMessageConverters(messageConverters);
     // Add custom HAL message converter

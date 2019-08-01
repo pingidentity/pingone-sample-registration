@@ -2,7 +2,7 @@
 The intention of this sample is to give developer a bird's eye view of the popular authentication protocol like OIDC 
 and some PingOne for Customers (Ping14C) Authentication and Management API services usage, that allows you to manage your organization’s users and applications, and of course - users authorization and authentication.
 
-It samples such flows like - register a new user, update user password by logged in user or by application itself, and recover a forgotten password scenario.
+It samples such flows like - **register a new user**, **update user password** by logged in user or by application itself, and **recover a forgotten password** scenario.
 
 ## Implementation Tutorial Video
 
@@ -44,11 +44,15 @@ Please don't forget to set `OAUTH2TOKEN` as environment variable(if you are usin
 
 3. Create two [applications](https://apidocs.pingidentity.com/pingone/customer/v1/api/auth/p1-a_AuthActivities/p1-a_appAuth/) through Ping14C admin console with the following configurations:
  - __Worker__ Application with default options.
-    Note that this Worker application instance will inherit the same Roles as the user who creates the instance. These Roles can be edited after the application instance is created.
+    This application type supports only the *OPENID_CONNECT* protocol. Note that this application (with `client_credentials` grant type) will inherit [the same roles as the user who creates the instance](https://apidocs.pingidentity.com/pingone/customer/v1/api/auth/p1-a_AuthActivities/p1-a_AccessServices/#Worker-application-permissions). These roles can be edited after the application instance is created
+    (see [Application role assignments](https://apidocs.pingidentity.com/pingone/customer/v1/api/man/p1_Applications/p1_AppRoleAssignments) and [User role assignments](https://apidocs.pingidentity.com/pingone/customer/v1/api/man/p1_Users/p1_RoleAssignments)).
+    
+    When retrieving access tokens for __Worker__ application, the authorization service checks to make sure the user or client has at least one role assignment. If not, the token request is rejected. If at least one role assignment exists, the authorization service creates a token with no scopes except for the requested OIDC scopes. 
+    When accessing platform APIs with this token, it retrieves the actor’s entitlements, which ensures that clients and users can access only the resources that their role assignments allow.
  
- - __Native, Single Page or Web Application__ (with *Authorization Code* or *Implicit* Grant Type) with such list of OIDC and PingOne platform `scope`'s:
+ - __Single Page or Web Application__ (with *Authorization Code* or *Implicit* Grant Type) with such list of OIDC and PingOne platform `scope`'s:
     - OIDC: `openid,profile,phone,email,address`
-    - PingOne's : `p1:reset:userPassword`, `p1:set:env:userPassword` - to change user password by the user
+    - PingOne's : `p1:reset:userPassword` - to change user password by the user
 
 Most of PingOne platform scopes are self-explanatory, but if you need more details about them please check ["Configure access through scopes"](https://apidocs.pingidentity.com/pingone/customer/v1/api/auth/p1-a_AuthActivities/p1-a_AccessServices/) part.
 
@@ -59,9 +63,23 @@ Most of PingOne platform scopes are self-explanatory, but if you need more detai
     - __Worker Application__ configuration in `oauth2.client` path copying over data from corresponding application from Ping14C admin console:
       - `<client_credentials_client_id>` with your client id (in `client-id` variable)
       - `<client_credentials_client_secret>` with your client secret (in `client-secret` variable)
-    - __Native (Single Page or Web) Application__ configuration in `spring.security.oauth2.client` path 
+    - __Single Page or Web Application__ configuration in `spring.security.oauth2.client` path 
       - `<authorization_code_client_id>` with your client id (in `clientId` variable)
       - `<authorization_code_client_client_credentials_client_secret>` with your client secret (in `clientSecret` variable)
+
+6. Adjust other parameters to your needs:
+    - `client-authentication-method` - The method used to authenticate the client with the PingOne as a Provider. The supported values are `basic` and `post`.
+    - `authorization-grant-type` -  The OAuth 2.0 Authorization Framework defines four [Authorization Grant](https://tools.ietf.org/html/rfc6749#section-1.3) types. The supported values are `authorization_code`, `implicit`, and `client_credentials`.
+    - `redirect-uri-template` - The client’s registered redirect URI that the PingOne Authorization Server redirects the end-user’s user-agent to after the end-user has authenticated and authorized access to the client.
+        
+        The default redirect URI template is `{baseUrl}/login/oauth2/code/{registrationId}`, where `registrationId` is a unique identifier for the client registration (in our case it is `pingidentity`).
+    - `scope` - [PingOne self-management](https://apidocs.pingidentity.com/pingone/customer/v1/api/auth/p1-a_AuthActivities/p1-a_AccessServices/#PingOne-self-management-scopes) or [OpenID Connect (OIDC)](https://apidocs.pingidentity.com/pingone/customer/v1/api/auth/p1-a_AuthActivities/p1-a_AccessServices/#OpenID-Connect-OIDC-scopes) scopes 
+        that can be specified for your *SPA or web application* only, since the *worker application* uses role assignments to determine the actions a user or client has access to perform. 
+        
+        Per [OAuth 2.0 Authorization Framework](https://tools.ietf.org/html/rfc6749#page-23) PingOne authorization server will ignore the scopes it does't support that is requested by the client. 
+        If the issued access token scope is different from the one requested by the client, the authorization server will include the "scope" response parameter to inform the client of the actual scope granted.
+                   
+
 
 
 ## PingOne for Customers API used in this sample
