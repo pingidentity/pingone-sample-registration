@@ -18,7 +18,11 @@ class PasswordsManagement(Configuration):
         password_policies = self.oauth_session.get(self.environment_url + '/passwordPolicies')
         password_policies.raise_for_status()  # throw exception if request does not return 2xx
         default_password_policy = list(
-            filter(lambda policy: policy.get('default') is True,
+            # Get password validation pattern from default password policy,
+            filter(lambda policy: policy.get('default') is True
+                                  and policy.get('minCharacters') and policy.get('maxRepeatedCharacters')
+                                  # or standard one - if the default one doesn't have necessary properties( "minCharacters" and "maxRepeatedCharacters")
+                                  or policy.get('name') == 'Standard',
                    password_policies.json()['_embedded']['passwordPolicies']))
 
         # Get password validation pattern(regex) based by policy
@@ -89,7 +93,7 @@ class PasswordsManagement(Configuration):
             'forceChange': force_change
         }
         response = self.oauth_session.put(
-            self.environment_url +'/users/' + user_id + '/password',
+            self.environment_url + '/users/' + user_id + '/password',
             json=data, headers=headers)
         response.raise_for_status()
         return response
@@ -112,7 +116,7 @@ class PasswordsManagement(Configuration):
             'recoveryCode': recovery_code,
             'newPassword': new_password
         }
-        response = self.oauth_session.post(self.environment_url +'/users/' + user_id + '/password',
-            json=data, headers=headers)
+        response = self.oauth_session.post(self.environment_url + '/users/' + user_id + '/password',
+                                           json=data, headers=headers)
         response.raise_for_status()
         return response
