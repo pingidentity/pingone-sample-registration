@@ -66,6 +66,12 @@ Most of PingOne platform scopes are self-explanatory, but if you need more detai
     - __Single Page or Web Application__ configuration in `spring.security.oauth2.client` path 
       - `<authorization_code_client_id>` with your client id (in `clientId` variable)
       - `<authorization_code_client_client_credentials_client_secret>` with your client secret (in `clientSecret` variable)
+    - __Security__:
+      - `<key store type>` the format used for the keystore.
+      - `<path to key>` the path to the keystore containing the certificate
+      - `<key store password>` the password used to generate the certificate
+      - `<key alias>` specifies the alias that you gave to the self-signed certificate when you created it
+<br>_`TIP:`_ ["how to create self-signed SSL certificate"](https://oracle-base.com/articles/linux/create-self-signed-ssl-certificates)
 
 6. Adjust other parameters to your needs:
     - `client-authentication-method` - The method used to authenticate the client with the PingOne as a Provider. The supported values are `basic` and `post`.
