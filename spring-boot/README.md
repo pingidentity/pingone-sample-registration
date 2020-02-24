@@ -67,10 +67,10 @@ Most of PingOne platform scopes are self-explanatory, but if you need more detai
       - `<authorization_code_client_id>` with your client id (in `clientId` variable)
       - `<authorization_code_client_client_credentials_client_secret>` with your client secret (in `clientSecret` variable)
     - __Security__:
-      - `<key store type>` the format used for the keystore.
+      - `<key store type>` the format used for the keystore (i.e PKCS12, JKS file)
       - `<path to key>` the path to the keystore containing the certificate
       - `<key store password>` the password used to generate the certificate
-      - `<key alias>` specifies the alias that you gave to the self-signed certificate when you created it
+      - `<key alias>` the alias mapped to self-signed certificate
 <br>_`TIP:`_ ["how to create self-signed SSL certificate"](https://oracle-base.com/articles/linux/create-self-signed-ssl-certificates)
 
 6. Adjust other parameters to your needs:
