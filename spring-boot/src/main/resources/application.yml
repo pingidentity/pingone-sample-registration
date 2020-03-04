@@ -1,10 +1,11 @@
 server:
-  port: 8443
+  port: 8080
   ssl:
     key-store-type: <key store type>
     key-store: <path to key>
     key-store-password: <key store password>
     key-alias: <key alias>
+    enabled: false
 
 logging:
   level:

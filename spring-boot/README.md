@@ -66,7 +66,7 @@ Most of PingOne platform scopes are self-explanatory, but if you need more detai
     - __Single Page or Web Application__ configuration in `spring.security.oauth2.client` path 
       - `<authorization_code_client_id>` with your client id (in `clientId` variable)
       - `<authorization_code_client_client_credentials_client_secret>` with your client secret (in `clientSecret` variable)
-    - __Security__:
+    - (optional) to enable __SSL__ change following properties `server.ssl.enabled: true`, `server.port: 8433` and fill certificate related params:
       - `<key store type>` the format used for the keystore (i.e PKCS12, JKS file)
       - `<path to key>` the path to the keystore containing the certificate
       - `<key store password>` the password used to generate the certificate
