@@ -5,7 +5,7 @@ This sample demonstrates how to:
  - **update user password by application itself**
  - **recover a forgotten password**
  
- using PingOne for Customers (Ping14C) [Authentication](https://apidocs.pingidentity.com/pingone/customer/v1/api/guide/p1-a_overview/)) and [Management API](https://apidocs.pingidentity.com/pingone/customer/v1/api/guide/p1_overview/) services.
+ using PingOne [Authentication](https://apidocs.pingidentity.com/pingone/platform/v1/api/#authentication-apis) and [Management API](https://apidocs.pingidentity.com/pingone/platform/v1/api/#management-apis) services.
 
 It uses `client_credentials` grant type to obtain an access token, thereby it bypasses the authentication flow steps and call the `/{environmentId}/as/token` endpoint directly to acquire the token.
 
@@ -17,13 +17,13 @@ It uses `client_credentials` grant type to obtain an access token, thereby it by
 
 # Prerequisites
 You will need the following things:
-- PingOne for Customers Account  - If you don’t have an existing one, please register for a Free Trial Account here: https://developer.pingidentity.com
+- PingOne Account  - If you don’t have an existing one, please register for a Free Trial Account here: https://www.pingidentity.com/en/trials.html
 - A Worker application instance. Instructions for 
-creating one can be found [here](https://apidocs.pingidentity.com/pingone/customer/v1/api/guide/p1_gettingStarted/#Configure-an-application-connection). 
+creating one can be found [here](https://apidocs.pingidentity.com/pingone/platform/v1/api/#getting-started). 
 - To have installed [Python 3](https://www.python.org/downloads/)
 
 # Setup & Running
-1. Copy this source code: `git clone https://github.com/pingidentity/pingone-customers-sample-registration.git`, then enter the python directory with `cd python`
+1. Copy this source code: `git clone https://github.com/pingidentity/pingone-sample-registration.git`, then enter the python directory with `cd python`
 
 2. If you have already different python projects, try to keep their dependencies separate by creating isolated python virtual environments for them.
 Otherwise, you can skip this step.
