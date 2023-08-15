@@ -42,9 +42,9 @@ Please don't forget to set `OAUTH2TOKEN` as environment variable(if you are usin
  export GITHUB_OAUTH_TOKEN={OAUTH2TOKEN}
 ``` 
 
-3. Create two [applications](https://apidocs.pingidentity.com/pingone/platform/v1/api/#applications) through PingOne admin console with the following configurations:
+3. Create two [applications](https://apidocs.pingidentity.com/pingone/platform/v1/api/#application-management) through PingOne admin console with the following configurations:
  - __Worker__ Application with default options.
-    This application type supports only the *OPENID_CONNECT* protocol. Note that this application (with `client_credentials` grant type) will inherit [the same roles as the user who creates the instance](https://apidocs.pingidentity.com/pingone/customer/v1/api/auth/p1-a_AuthActivities/p1-a_AccessServices/#Worker-application-permissions). These roles can be edited after the application instance is created
+    This application type supports only the *OPENID_CONNECT* protocol. Note that this application (with `client_credentials` grant type) will inherit [the same roles as the user who creates the instance](https://apidocs.pingidentity.com/pingone/platform/v1/api/#post-create-application-oidc-protocol---worker-app). These roles can be edited after the application instance is created
     (see [Application role assignments](https://apidocs.pingidentity.com/pingone/platform/v1/api/#application-role-assignments) and [User role assignments](https://apidocs.pingidentity.com/pingone/platform/v1/api/#user-role-assignments)).
     
     When retrieving access tokens for __Worker__ application, the authorization service checks to make sure the user or client has at least one role assignment. If not, the token request is rejected. If at least one role assignment exists, the authorization service creates a token with no scopes except for the requested OIDC scopes. 
@@ -54,7 +54,7 @@ Please don't forget to set `OAUTH2TOKEN` as environment variable(if you are usin
     - OIDC: `openid,profile,phone,email,address`
     - PingOne's : `p1:reset:userPassword` - to change user password by the user
 
-Most of PingOne platform scopes are self-explanatory, but if you need more details about them please check ["Configure access through scopes"](https://apidocs.pingidentity.com/pingone/platform/v1/api/#access-services-through-scopes-and-roles) part.
+Most of PingOne platform scopes are self-explanatory, but if you need more details about them please check ["Resouce Scopes"](https://apidocs.pingidentity.com/pingone/platform/v1/api/#resource-scopes) part.
 
 4. Enable both applications in Ping14C admin console.
 
@@ -93,7 +93,7 @@ Most of PingOne platform scopes are self-explanatory, but if you need more detai
 |    Endpoint   |    Description   |
 | ------------- |------------- |
 | [`POST /{environmentId}/as/authorize`](https://apidocs.pingidentity.com/pingone/platform/v1/api/#get-authorize-authorization_code) | Authorization request with a code grant (__spring__ uses under the hood). `prompt=login` parameter is used by default |
-| [`POST /{environmentId}/as/token`](https://apidocs.pingidentity.com/pingone/platform/v1/api/#get-authorize-authorization_code)  | Obtain an access token by presenting its authorization grant (__spring__ uses under the hood) |
+| [`POST /{environmentId}/as/token`](https://apidocs.pingidentity.com/pingone/platform/v1/api/#post-authorize-authorization_code)  | Obtain an access token by presenting its authorization grant (__spring__ uses under the hood) |
 | [`GET /{environmentID}/as/.well-known/openid-configuration`](https://apidocs.pingidentity.com/pingone/platform/v1/api/#get-discovery-openid-configuration)  | Get OpenID Connect provider metadata document for the issuer (__spring__ uses under the hood) |
 | [`GET /{environmentId}/as/userinfo`](https://apidocs.pingidentity.com/pingone/platform/v1/api/#get-userinfo)  | Get token claims about the authenticated end user ( used for `Show User Information` button) ||
 
@@ -104,8 +104,8 @@ Most of PingOne platform scopes are self-explanatory, but if you need more detai
 | Password policies  | [`GET /environments/{environmentId}/passwordPolicies`](https://apidocs.pingidentity.com/pingone/platform/v1/api/#get-read-all-password-policies)  | Get all password policies for an environment to get the default one. It will be used for password verification on the client side   |
 | User password management  | [`PUT /environments/{environmentId}/users/{userId}/password`](https://apidocs.pingidentity.com/pingone/platform/v1/api/#put-update-password-self)  | Update a password: self-change password update and administrative-change reset of user password |
 |  | [`POST /environments/{environmentId}/users/{userId}/password`](https://apidocs.pingidentity.com/pingone/platform/v1/api/#post-password-recover)  | Recover a forgotten password |
-| Users | [`GET /environments/{environmentId}/users?filter=name.family%20eq%20%22Smith%22%20and%20name.given%20sw%20%22W%22`](https://apidocs.pingidentity.com/pingone/platform/v1/api/#get-read-all-users)  | Find a user by his name or email for further usage of his ID |
-|  | [`POST /environments/{environmentId}/users`](https://apidocs.pingidentity.com/pingone/customer/v1/api/man/p1_Users/#Users)  | Create new user |
+| Users | [`GET /environments/{environmentId}/users?filter=name.family%20eq%20%22Smith%22%20and%20name.given%20sw%20%22W%22`](https://apidocs.pingidentity.com/pingone/platform/v1/api/#get-read-user-or-users)  | Find a user by his name or email for further usage of his ID |
+|  | [`POST /environments/{environmentId}/users`](https://apidocs.pingidentity.com/pingone/platform/v1/api/#post-create-user)  | Create new user |
 
 
 ## Developer Tips

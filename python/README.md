@@ -5,7 +5,7 @@ This sample demonstrates how to:
  - **update user password by application itself**
  - **recover a forgotten password**
  
- using PingOne [Authentication](https://apidocs.pingidentity.com/pingone/platform/v1/api/#authentication-apis) and [Management API](https://apidocs.pingidentity.com/pingone/platform/v1/api/#management-apis) services.
+ using PingOne [Authentication](https://apidocs.pingidentity.com/pingone/platform/v1/api/#authorization-and-authentication-apis) and [Management API](https://apidocs.pingidentity.com/pingone/platform/v1/api/#management-apis) services.
 
 It uses `client_credentials` grant type to obtain an access token, thereby it bypasses the authentication flow steps and call the `/{environmentId}/as/token` endpoint directly to acquire the token.
 
@@ -19,7 +19,7 @@ It uses `client_credentials` grant type to obtain an access token, thereby it by
 You will need the following things:
 - PingOne Account  - If you don’t have an existing one, please register for a Free Trial Account here: https://www.pingidentity.com/en/trials.html
 - A Worker application instance. Instructions for 
-creating one can be found [here](https://apidocs.pingidentity.com/pingone/platform/v1/api/#getting-started). 
+creating one can be found [here](https://apidocs.pingidentity.com/pingone/main/v1/api/#getting-started-with-the-pingone-apis). 
 - To have installed [Python 3](https://www.python.org/downloads/)
 
 # Setup & Running
@@ -37,7 +37,7 @@ Otherwise, you can skip this step.
 5. Start an application using: `python3 app.py`
 
 ## Libraries Used
-- [Flask Message Flashing](http://flask.pocoo.org/docs/1.0/patterns/flashing/)
+- [Flask Message Flashing](https://flask.palletsprojects.com/en/2.3.x/patterns/flashing/)
 - [Requests-OAuthlib](https://requests-oauthlib.readthedocs.io/en/latest/index.html)
 - [PyJWT](https://pyjwt.readthedocs.io/en/latest/usage.html)
 
@@ -64,4 +64,4 @@ Setting `use_debugger` to True without being in debug mode won’t catch any exc
 1. If you have seen an error like `“OSError: [Errno 8] Exec format error”` when running `python3 app.py` in debug mode (that is by default), then just add the following line (shebang) at the top of app.py:
 `#!/usr/bin/env python3` and make the file executable: `chmod +x flaskblog.py`. Then try again `python3 app.py`.
     This may be because Flask is trying to run `app.py` directly on your system rather than with the python binary `python3 app.py`, that is not working since `app.py` isn't executable.
-1. Comment `ENV='development'` in [config.cfg](config.cfg) to disable [Debug Mode](http://flask.pocoo.org/docs/1.0/quickstart/#debug-mode).
+1. Comment `ENV='development'` in [config.cfg](config.cfg) to disable [Debug Mode](https://flask.palletsprojects.com/en/2.3.x/quickstart/#debug-mode).
